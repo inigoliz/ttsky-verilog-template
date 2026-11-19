@@ -9,12 +9,17 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+An 8-bit free-running counter. On every rising clock edge it increments by one, and it wraps from 255 back to 0. The
+count is driven directly on the eight dedicated output pins `uo[7:0]`. Reset (`rst_n` low) clears it to 0.
+
+This project is the "tracer bullet" of a learning plan: its only purpose is to push a trivial design through the whole
+Verilog to GDS flow.
 
 ## How to test
 
-Explain how to use your project
+Apply a clock and pulse `rst_n` low, then high. Watch `uo[0]` toggle at half the clock frequency, `uo[1]` at a quarter,
+and so on.
 
 ## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+None. An LED on `uo[7]` or a logic analyzer on the output pins is enough.
