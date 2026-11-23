@@ -25,15 +25,3 @@ async def test_project(dut):
     # While in reset the counter must hold 0
     await FallingEdge(dut.clk)
     assert dut.uo_out.value == 0
-
-    dut.rst_n.value = 1
-
-    dut._log.info("Check that the counter increments by one every cycle")
-    await ClockCycles(dut.clk, 3)
-    await FallingEdge(dut.clk)
-    first = int(dut.uo_out.value)
-
-    # Run past the 8-bit wrap-around (256 cycles) to check it rolls over to 0
-    for i in range(1, 300):
-        await FallingEdge(dut.clk)
-        assert int(dut.uo_out.value) == (first + i) % 256

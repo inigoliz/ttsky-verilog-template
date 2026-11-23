@@ -16,15 +16,18 @@ module tt_um_inigoliz_counter (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  reg [7:0] count;
-
-  always @(posedge clk) begin
-    if (!rst_n) count <= 8'd0;  // no power-on state in silicon: reset is mandatory
-    else count <= count + 8'd1;
+  reg [2:0] r_LFSR;
+  wire w_XNOR;
+  always @(posedge clk)
+  begin
+    if (!rst_n) r_LFSR <= 3'd0;
+    else r_LFSR <= {r_LFSR[1:0], w_XNOR};
   end
+  assign w_XNOR = r_LFSR[2] ^~ r_LFSR[1];
 
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = count;
+  assign uo_out[2:0] = r_LFSR;
+  assign uo_out[7:3] = 0;
   assign uio_out = 0;
   assign uio_oe  = 0;
 
